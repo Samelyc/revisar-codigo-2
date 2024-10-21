@@ -1,97 +1,74 @@
-var formulario = document.querySelector("#form")
+// Se cambiaron las variables de ver a let 
 
-formulario.onsubmit = function(e) {
+let formulario = document.querySelector("#formulario"); // Se cambio el id a formulario para que sea igual al html
 
-  e.prevent();
-  
-  var n = formulario.elements[0]
-  var e = formulario.elements[1]
-  var na = formulario.elements[2]
+formulario.onsubmit = function(event) { // Se cambio el nombre de la función de "e" a "event"
+  event.preventDefault(); // Cambié el metodo de e.prevent() para que funcionara y enviara eñ formulario correctamente
 
-  var nombre = n.value
-  var edad = e.value
 
-  var i = na.selectedIndex
-  var nacionalidad = na.options[i].value
-  console.log(nombre, edad)
-  console.log(nacionalidad)
+  // Cambie el nombre de las variables de n, e, na para que se pueda leer mejor y se agrego el metodo "getElementById" para que llamara mejor a la función
+  let nombre = document.getElementById("name").value;
+  let edad = document.getElementById("age").value;
+  let nacionalidadElement = document.getElementById("nationality");
+  let nacionalidad = nacionalidadElement.options[nacionalidadElement.selectedIndex].value;
 
+  // Se agrego el documet.getElementById - para que coincidiera con el de arriba 
   if (nombre.length === 0) {
-    n.classList.add("error")
+    document.getElementById("name").classList.add("error");
   }
   if (edad < 18 || edad > 120) {
-    e.classList.add("error")
+    document.getElementById("age").classList.add("error");
   }
 
-if (nombre.length > 0 
-  && (edad > 18 
-    && edad < 120) ) {
-  agregarInvitado(nombre, edad, nacionalidad)
+  if (nombre.length > 0 && edad >= 18 && edad <= 120) {
+    agregarInvitado(nombre, edad, nacionalidad);
   }
-}
+};
 
-var botonBorrar = document.createElement("button")
-botonBorrar.textContent = "Eliminar invitado"
-botonBorrar.id = "boton-borrar"
-var corteLinea = document.createElement("br")
-document.body.appendChild(corteLinea)
-document.body.appendChild(botonBorrar);
-
+// Función que agrega un invitado a la lista.
 function agregarInvitado(nombre, edad, nacionalidad) {
+ // Aqui creamso un objeto para que se agregen los nombres completos.
+  const nacionalidades = {
+    "ar": "Argentina",
+    "mx": "Mexicana",
+    "per": "Peruana",
+    "vnzl": "Venezolana"
+  };
 
-  if (nacionalidad === "ar") {
-    nacionalidad = "Argentina"
-  }
-  else if (nacionalidad === "mx") {
-    nacionalidad = "Mexicana"
-  }
-  else if (nacionalidad === "vnzl") {
-    nacionalidad = "Venezolana"
-  }
-  else if (nacionalidad === "per") {
-    nacionalidad = "Peruana"
-  }
+  let nacionalidadCompleta = nacionalidades[nacionalidad] || "Desconocida";
 
-var lista = document.getElementById("lista-de-invitados")
+  let lista = document.getElementById("lista-de-invitados");
 
-var elementoLista = document.createElement("div")
-elementoLista.classList.added("elemento-lista")
-lista.appendChild(elementoLista)
+  //Crea un elemento para los invitados
+  let elementoLista = document.createElement("div");
+  elementoLista.classList.add("elemento-lista");
+  lista.appendChild(elementoLista);
 
-var spanNombre = document.createElement("span")
-var inputNombre = document.createElement("input")
-var espacio = document.createElement("br")
-spanNombre.textContent = "Nombre: "
-inputNombre.value = nombre 
-elementoLista.appendChild(spanNombre)
-elementoLista.appendChild(inputNombre)
-elementoLista.appendChild(espacio)
+  crearElemento("Nombre", nombre, elementoLista);
+  crearElemento("Edad", edad, elementoLista);
+  crearElemento("Nacionalidad", nacionalidadCompleta, elementoLista);
 
-function crearElemento(descripcion, valor) {
-var spanNombre = document.createElement("span")
-var inputNombre = document.createElement("input")
-var espacio = document.createElement("br")
-spanNombre.textContent = descripcion + ": "
-inputNombre.value = valor 
-elementoLista.appendChild(spanNombre)
-elementoLista.appendChild(inputNombre)
-elementoLista.appendChild(espacio)
+   // Botón para eliminar un invitado
+  let botonBorrar = document.createElement("button");
+  botonBorrar.textContent = "Eliminar invitado";
+  botonBorrar.onclick = function() {   // Se agrego el evento 'onclick'
+    elementoLista.remove();
+  };
+
+  elementoLista.appendChild(document.createElement("br"));
+  elementoLista.appendChild(botonBorrar);
 }
 
-crearElemento("Nombre", nombre)
-crearElemento("Edad", edad)
-crearElemento("Nacionalidad", nacionalidad)
+function crearElemento(descripcion, valor, contenedor) {
+  let spanDescripcion = document.createElement("span");
+  let inputValor = document.createElement("input");
+  let espacio = document.createElement("br");
 
+  spanDescripcion.textContent = descripcion + ": ";
+  inputValor.value = valor;
+  inputValor.disabled = true;
 
-var botonBorrar = document.createElement("button")
-botonBorrar.textContent = "Eliminar invitado"
-botonBorrar.id = "boton-borrar"
-var corteLinea = document.createElement("br")
-elementoLista.appendChild(corteLinea)
-elementoLista.appendChild(botonBorrar);
-
- botonBorrar.onclick = function() {
-// this.parentNode.style.display = 'none';
-botonBorrar.parentNode.remove()
-  }
+  contenedor.appendChild(spanDescripcion);
+  contenedor.appendChild(inputValor);
+  contenedor.appendChild(espacio);
 }

@@ -12,7 +12,8 @@
   <h1>Bienvenidos a mi fiesta</h1>
   <h2>Por favor, confirmar asistencia:</h2>
 
-  <form class="formulario">
+  <!-- Cambié formulario de una clase a un id para que funcione con el JS -->
+  <form id="formulario">
     Nombre <input type="text" name="name" id="name">
     <br />
     Edad <input type="number" name="age" id="age">
@@ -30,8 +31,9 @@
   </form>
 
   <div>
+    <!-- Se agrego un id="lista-de-invitados" para que el js pueda agregar elementos a una lista -->
     <h2>Lista de invitados</h2>
-
+    <div id="lista-de-invitados"></div>
   </div>
 
   <script src="../formulario.js"></script>
